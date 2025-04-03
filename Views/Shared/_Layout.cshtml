@@ -21,7 +21,7 @@
                 <a href="#"><i class="fab fa-youtube"></i></a>
             </div>
             <div class="search-box">
-                <form method="post">
+                <form method="post" action="/@ViewContext.RouteData.Values["controller"]/@ViewContext.RouteData.Values["action"]">
                     <input type="text" name="Query" placeholder="Nhập từ khóa..." required>
                     <input type="date" name="FromDate">
                     <select name="SortBy">

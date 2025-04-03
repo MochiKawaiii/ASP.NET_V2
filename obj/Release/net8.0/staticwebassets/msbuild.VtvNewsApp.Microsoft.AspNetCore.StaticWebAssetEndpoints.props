@@ -1,0 +1,16 @@
+﻿<Project>
+  <ItemGroup>
+    <StaticWebAssetEndpoint Include="_content/VtvNewsApp/css/site.css">
+      <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\css\site.css'))</AssetFile>
+      <Selectors><![CDATA[[]]]></Selectors>
+      <EndpointProperties><![CDATA[[{"Name":"integrity","Value":"sha256-il\u002BQUw2oJx3nBMmOI3SSjpOeHzdZi1nytfUeE\u002BzsFCc="}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"no-cache"},{"Name":"Content-Length","Value":"4253"},{"Name":"Content-Type","Value":"text/css"},{"Name":"ETag","Value":"\u0022il\u002BQUw2oJx3nBMmOI3SSjpOeHzdZi1nytfUeE\u002BzsFCc=\u0022"},{"Name":"Last-Modified","Value":"Tue, 01 Apr 2025 15:20:13 GMT"}]]]></ResponseHeaders>
+    </StaticWebAssetEndpoint>
+    <StaticWebAssetEndpoint Include="_content/VtvNewsApp/css/site.ihgkg4br25.css">
+      <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\css\site.css'))</AssetFile>
+      <Selectors><![CDATA[[]]]></Selectors>
+      <EndpointProperties><![CDATA[[{"Name":"fingerprint","Value":"ihgkg4br25"},{"Name":"integrity","Value":"sha256-il\u002BQUw2oJx3nBMmOI3SSjpOeHzdZi1nytfUeE\u002BzsFCc="},{"Name":"label","Value":"_content/VtvNewsApp/css/site.css"}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"4253"},{"Name":"Content-Type","Value":"text/css"},{"Name":"ETag","Value":"\u0022il\u002BQUw2oJx3nBMmOI3SSjpOeHzdZi1nytfUeE\u002BzsFCc=\u0022"},{"Name":"Last-Modified","Value":"Tue, 01 Apr 2025 15:20:13 GMT"}]]]></ResponseHeaders>
+    </StaticWebAssetEndpoint>
+  </ItemGroup>
+</Project>

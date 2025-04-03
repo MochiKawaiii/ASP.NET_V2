@@ -1,3 +1,6 @@
 {
-    "git.ignoreLimitWarning": true
+    "git.ignoreLimitWarning": true,
+    "appService.preDeployTask": "publish-release",
+    "appService.deploySubpath": "bin\\Release\\net8.0\\publish",
+    "appService.defaultWebAppToDeploy": "/subscriptions/f9ebcfae-89b9-4ae2-915d-a368515c861c/resourceGroups/CNTPT/providers/Microsoft.Web/sites/CMMDH"
 }

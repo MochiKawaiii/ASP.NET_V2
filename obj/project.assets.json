@@ -941,11 +941,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\TUF\\OneDrive - hoadao05\\Máy tính\\ASP.NET - Copy\\VtvNewsApp.csproj",
+      "projectUniqueName": "C:\\Users\\TUF\\OneDrive - hoadao05\\Máy tính\\ASP.NET - Copy - Copy\\VtvNewsApp.csproj",
       "projectName": "VtvNewsApp",
-      "projectPath": "C:\\Users\\TUF\\OneDrive - hoadao05\\Máy tính\\ASP.NET - Copy\\VtvNewsApp.csproj",
+      "projectPath": "C:\\Users\\TUF\\OneDrive - hoadao05\\Máy tính\\ASP.NET - Copy - Copy\\VtvNewsApp.csproj",
       "packagesPath": "C:\\Users\\TUF\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\TUF\\OneDrive - hoadao05\\Máy tính\\ASP.NET - Copy\\obj\\",
+      "outputPath": "C:\\Users\\TUF\\OneDrive - hoadao05\\Máy tính\\ASP.NET - Copy - Copy\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

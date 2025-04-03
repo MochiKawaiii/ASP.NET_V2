@@ -9,53 +9,53 @@ build_property.EnforceExtendedAnalyzerRules =
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = VtvNewsApp
 build_property.RootNamespace = VtvNewsApp
-build_property.ProjectDir = C:\Users\TUF\OneDrive - hoadao05\Máy tính\ASP.NET - Copy\
+build_property.ProjectDir = C:\Users\TUF\OneDrive - hoadao05\Máy tính\ASP.NET - Copy - Copy\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.RazorLangVersion = 8.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = true
-build_property.MSBuildProjectDirectory = C:\Users\TUF\OneDrive - hoadao05\Máy tính\ASP.NET - Copy
+build_property.MSBuildProjectDirectory = C:\Users\TUF\OneDrive - hoadao05\Máy tính\ASP.NET - Copy - Copy
 build_property._RazorSourceGeneratorDebug = 
 build_property.EffectiveAnalysisLevelStyle = 8.0
 build_property.EnableCodeStyleSeverity = 
 
-[C:/Users/TUF/OneDrive - hoadao05/Máy tính/ASP.NET - Copy/Views/Home/GiaiTri.cshtml]
+[C:/Users/TUF/OneDrive - hoadao05/Máy tính/ASP.NET - Copy - Copy/Views/Home/GiaiTri.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxHaWFpVHJpLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/TUF/OneDrive - hoadao05/Máy tính/ASP.NET - Copy/Views/Home/Index.cshtml]
+[C:/Users/TUF/OneDrive - hoadao05/Máy tính/ASP.NET - Copy - Copy/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/TUF/OneDrive - hoadao05/Máy tính/ASP.NET - Copy/Views/Home/KinhTe.cshtml]
+[C:/Users/TUF/OneDrive - hoadao05/Máy tính/ASP.NET - Copy - Copy/Views/Home/KinhTe.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxLaW5oVGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/TUF/OneDrive - hoadao05/Máy tính/ASP.NET - Copy/Views/Home/TheGioi.cshtml]
+[C:/Users/TUF/OneDrive - hoadao05/Máy tính/ASP.NET - Copy - Copy/Views/Home/TheGioi.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxUaGVHaW9pLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/TUF/OneDrive - hoadao05/Máy tính/ASP.NET - Copy/Views/Home/TheThao.cshtml]
+[C:/Users/TUF/OneDrive - hoadao05/Máy tính/ASP.NET - Copy - Copy/Views/Home/TheThao.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxUaGVUaGFvLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/TUF/OneDrive - hoadao05/Máy tính/ASP.NET - Copy/Views/Home/ThoiSu.cshtml]
+[C:/Users/TUF/OneDrive - hoadao05/Máy tính/ASP.NET - Copy - Copy/Views/Home/ThoiSu.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxUaG9pU3UuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/TUF/OneDrive - hoadao05/Máy tính/ASP.NET - Copy/Views/Shared/Error.cshtml]
+[C:/Users/TUF/OneDrive - hoadao05/Máy tính/ASP.NET - Copy - Copy/Views/Shared/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/TUF/OneDrive - hoadao05/Máy tính/ASP.NET - Copy/Views/Shared/_Layout.cshtml]
+[C:/Users/TUF/OneDrive - hoadao05/Máy tính/ASP.NET - Copy - Copy/Views/Shared/_Layout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/TUF/OneDrive - hoadao05/Máy tính/ASP.NET - Copy/Views/_ViewImports.cshtml]
+[C:/Users/TUF/OneDrive - hoadao05/Máy tính/ASP.NET - Copy - Copy/Views/_ViewImports.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/TUF/OneDrive - hoadao05/Máy tính/ASP.NET - Copy/Views/_ViewStart.cshtml]
+[C:/Users/TUF/OneDrive - hoadao05/Máy tính/ASP.NET - Copy - Copy/Views/_ViewStart.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 

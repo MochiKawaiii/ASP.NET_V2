@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "uEKHaRKzClM=",
+  "dgSpecHash": "CHw40kZ13bk=",
   "success": true,
-  "projectFilePath": "C:\\Users\\TUF\\OneDrive - hoadao05\\Máy tính\\ASP.NET - Copy\\VtvNewsApp.csproj",
+  "projectFilePath": "C:\\Users\\TUF\\OneDrive - hoadao05\\Máy tính\\ASP.NET - Copy - Copy\\VtvNewsApp.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\TUF\\.nuget\\packages\\microsoft.aspnetcore.mvc.razor.extensions\\6.0.0\\microsoft.aspnetcore.mvc.razor.extensions.6.0.0.nupkg.sha512",
     "C:\\Users\\TUF\\.nuget\\packages\\microsoft.aspnetcore.mvc.razor.runtimecompilation\\8.0.0\\microsoft.aspnetcore.mvc.razor.runtimecompilation.8.0.0.nupkg.sha512",

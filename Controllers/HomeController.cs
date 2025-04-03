@@ -29,15 +29,15 @@ namespace VtvNewsApp.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            // Mở rộng từ khóa tìm kiếm
-            var viewModel = await GetNewsViewModel("Vietnam OR Việt Nam tin tức", "home", "Trang Chủ");
+            // Mở rộng từ khóa tìm kiếm để có nhiều kết quả hơn
+            var viewModel = await GetNewsViewModel("vietnam news latest", "vietnam", "Trang Chủ");
             return View(viewModel);
         }
 
         [HttpPost]
         public async Task<IActionResult> Index(NewsViewModel model)
         {
-            // Không bắt buộc phải có từ khóa Vietnam
+            // Đảm bảo từ khóa tìm kiếm được sử dụng đúng
             var resultModel = await ProcessSearch(model);
             return View(resultModel);
         }
@@ -45,7 +45,7 @@ namespace VtvNewsApp.Controllers
         [HttpGet]
         public async Task<IActionResult> ThoiSu()
         {
-            var viewModel = await GetNewsViewModel("tin tức chính trị", "thoisu", "Thời Sự");
+            var viewModel = await GetNewsViewModel("vietnam politics", "thoisu", "Thời Sự");
             return View(viewModel);
         }
 
@@ -59,7 +59,7 @@ namespace VtvNewsApp.Controllers
         [HttpGet]
         public async Task<IActionResult> KinhTe()
         {
-            var viewModel = await GetNewsViewModel("kinh tế tài chính thương mại", "kinhte", "Kinh Tế");
+            var viewModel = await GetNewsViewModel("vietnam economy", "kinhte", "Kinh Tế");
             return View(viewModel);
         }
 
@@ -73,7 +73,7 @@ namespace VtvNewsApp.Controllers
         [HttpGet]
         public async Task<IActionResult> TheGioi()
         {
-            var viewModel = await GetNewsViewModel("thế giới quốc tế", "thegioi", "Thế Giới");
+            var viewModel = await GetNewsViewModel("vietnam international", "thegioi", "Thế Giới");
             return View(viewModel);
         }
 
@@ -87,7 +87,7 @@ namespace VtvNewsApp.Controllers
         [HttpGet]
         public async Task<IActionResult> TheThao()
         {
-            var viewModel = await GetNewsViewModel("thể thao bóng đá world cup olympic", "thethao", "Thể Thao");
+            var viewModel = await GetNewsViewModel("vietnam sports", "thethao", "Thể Thao");
             return View(viewModel);
         }
 
@@ -101,7 +101,7 @@ namespace VtvNewsApp.Controllers
         [HttpGet]
         public async Task<IActionResult> GiaiTri()
         {
-            var viewModel = await GetNewsViewModel("giải trí nghệ sĩ điện ảnh âm nhạc", "giaitri", "Giải Trí");
+            var viewModel = await GetNewsViewModel("vietnam entertainment", "giaitri", "Giải Trí");
             return View(viewModel);
         }
 
@@ -182,19 +182,22 @@ namespace VtvNewsApp.Controllers
                     fromDate = DateTime.Parse(model.FromDate);
                 }
 
+                // Đảm bảo truy vấn tìm kiếm không trống
+                var query = !string.IsNullOrWhiteSpace(model.Query) ? model.Query : "vietnam";
+
                 var articles = await _newsService.GetArticlesAsync(
-                    model.Query,
+                    query,
                     fromDate,
                     model.SortBy ?? "relevancy",
                     50);
 
                 if (articles == null || !articles.Any())
                 {
-                    _logger.LogWarning($"Không tìm thấy kết quả tìm kiếm cho {model.Query}");
+                    _logger.LogWarning($"Không tìm thấy kết quả tìm kiếm cho {query}");
                     
                     // Thử lại với ít từ khóa hơn nếu không tìm thấy kết quả
-                    string simpleQuery = GetSimplifiedQuery(model.Query);
-                    if (simpleQuery != model.Query)
+                    string simpleQuery = GetSimplifiedQuery(query);
+                    if (simpleQuery != query)
                     {
                         articles = await _newsService.GetArticlesAsync(simpleQuery, fromDate, model.SortBy ?? "relevancy", 50);
                     }
@@ -206,7 +209,7 @@ namespace VtvNewsApp.Controllers
                     }
                 }
 
-                // Không lọc kết quả theo từ khóa để hiển thị nhiều bài viết hơn
+                // Không lọc kết quả để hiển thị đủ bài viết tìm được
                 viewModel.Articles = await TranslateArticlesAsync(articles);
             }
             catch (Exception ex)
@@ -224,15 +227,27 @@ namespace VtvNewsApp.Controllers
 
             foreach (var article in articles)
             {
-                var (translatedTitle, translatedDescription) = await _translationService.TranslateArticleAsync(
-                    article.Title, 
-                    article.Description);
+                try
+                {
+                    var (translatedTitle, translatedDescription) = await _translationService.TranslateArticleAsync(
+                        article.Title, 
+                        article.Description);
 
-                article.TranslatedTitle = translatedTitle;
-                article.TranslatedDescription = translatedDescription;
-                article.VnPublishedAt = _translationService.ConvertUtcToVnTime(article.PublishedAt);
+                    article.TranslatedTitle = translatedTitle;
+                    article.TranslatedDescription = translatedDescription;
+                    article.VnPublishedAt = _translationService.ConvertUtcToVnTime(article.PublishedAt);
 
-                translatedArticles.Add(article);
+                    translatedArticles.Add(article);
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, $"Lỗi khi dịch bài viết: {ex.Message}");
+                    // Vẫn thêm bài viết ngay cả khi không dịch được
+                    article.TranslatedTitle = article.Title;
+                    article.TranslatedDescription = article.Description;
+                    article.VnPublishedAt = _translationService.ConvertUtcToVnTime(article.PublishedAt);
+                    translatedArticles.Add(article);
+                }
             }
 
             return translatedArticles;
@@ -242,23 +257,24 @@ namespace VtvNewsApp.Controllers
         private string GetSimplifiedQuery(string query)
         {
             if (string.IsNullOrWhiteSpace(query))
-                return query;
+                return "vietnam";
                 
             var words = query.Split(' ', StringSplitOptions.RemoveEmptyEntries);
             if (words.Length <= 2)
                 return query;
-                
-            // Chỉ lấy 1-2 từ khóa quan trọng nhất
-            string[] importantKeywords = new[] { 
-                "tin tức", "thời sự", "chính trị", "kinh tế", "tài chính", "thế giới", 
-                "quốc tế", "thể thao", "bóng đá", "giải trí", "âm nhạc", "điện ảnh" 
-            };
             
-            var simplifiedWords = words.Where(w => importantKeywords.Any(k => w.Contains(k))).Take(2);
-            if (!simplifiedWords.Any())
-                return words.Take(2).Aggregate((a, b) => $"{a} {b}");
-                
-            return simplifiedWords.Aggregate((a, b) => $"{a} {b}");
+            // Đảm bảo "vietnam" luôn có trong truy vấn đơn giản hóa
+            var hasVietnam = words.Any(w => w.Equals("vietnam", StringComparison.OrdinalIgnoreCase));
+            
+            // Chỉ lấy 2-3 từ khóa quan trọng nhất
+            var simplifiedWords = words.Take(3).ToList();
+            
+            if (!hasVietnam)
+            {
+                simplifiedWords.Insert(0, "vietnam");
+            }
+            
+            return string.Join(" ", simplifiedWords);
         }
     }
 
