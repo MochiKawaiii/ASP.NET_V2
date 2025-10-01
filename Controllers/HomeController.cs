@@ -121,6 +121,7 @@ namespace VtvNewsApp.Controllers
         // Phương thức hỗ trợ
         private async Task<NewsViewModel> GetNewsViewModel(string query, string activeTab, string categoryName)
         {
+            var stopwatch = Stopwatch.StartNew();
             var viewModel = new NewsViewModel
             {
                 ActiveTab = activeTab,
@@ -130,8 +131,8 @@ namespace VtvNewsApp.Controllers
 
             try
             {
-                // Tăng số lượng kết quả tìm kiếm
-                var articles = await _newsService.GetArticlesAsync(query, null, "relevancy", 50);
+                // Tăng số lượng kết quả tìm kiếm lên 100
+                var articles = await _newsService.GetArticlesAsync(query, null, "relevancy", 100);
                 
                 if (articles == null || !articles.Any())
                 {
@@ -153,11 +154,19 @@ namespace VtvNewsApp.Controllers
                 
                 // Không lọc kết quả theo từ khóa để hiển thị nhiều bài viết hơn
                 viewModel.Articles = await TranslateArticlesAsync(articles);
+                
+                // Thêm thông tin thống kê
+                stopwatch.Stop();
+                viewModel.LoadTimeMs = stopwatch.ElapsedMilliseconds;
+                viewModel.TotalArticles = viewModel.Articles?.Count ?? 0;
+                viewModel.TranslatedCount = viewModel.Articles?.Count(a => !string.IsNullOrEmpty(a.TranslatedTitle)) ?? 0;
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, $"Lỗi khi tải tin tức cho danh mục {categoryName}: {ex.Message}");
                 viewModel.ErrorMessage = $"Đã xảy ra lỗi khi tải dữ liệu: {ex.Message}";
+                stopwatch.Stop();
+                viewModel.LoadTimeMs = stopwatch.ElapsedMilliseconds;
             }
 
             return viewModel;
@@ -165,6 +174,7 @@ namespace VtvNewsApp.Controllers
 
         private async Task<NewsViewModel> ProcessSearch(NewsViewModel model)
         {
+            var stopwatch = Stopwatch.StartNew();
             var viewModel = new NewsViewModel
             {
                 ActiveTab = model.ActiveTab,
@@ -189,7 +199,7 @@ namespace VtvNewsApp.Controllers
                     query,
                     fromDate,
                     model.SortBy ?? "relevancy",
-                    50);
+                    100);
 
                 if (articles == null || !articles.Any())
                 {
@@ -211,11 +221,19 @@ namespace VtvNewsApp.Controllers
 
                 // Không lọc kết quả để hiển thị đủ bài viết tìm được
                 viewModel.Articles = await TranslateArticlesAsync(articles);
+                
+                // Thêm thông tin thống kê
+                stopwatch.Stop();
+                viewModel.LoadTimeMs = stopwatch.ElapsedMilliseconds;
+                viewModel.TotalArticles = viewModel.Articles?.Count ?? 0;
+                viewModel.TranslatedCount = viewModel.Articles?.Count(a => !string.IsNullOrEmpty(a.TranslatedTitle)) ?? 0;
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, $"Lỗi khi tìm kiếm: {ex.Message}");
                 viewModel.ErrorMessage = $"Đã xảy ra lỗi khi tìm kiếm: {ex.Message}";
+                stopwatch.Stop();
+                viewModel.LoadTimeMs = stopwatch.ElapsedMilliseconds;
             }
 
             return viewModel;
@@ -225,32 +243,84 @@ namespace VtvNewsApp.Controllers
         {
             var translatedArticles = new List<Article>();
 
-            foreach (var article in articles)
+            // Tăng giới hạn lên 30 bài và xử lý theo batch
+            var limitedArticles = articles.Take(30).ToList();
+            
+            // Chia thành các batch nhỏ để xử lý song song
+            const int batchSize = 5;
+            var batches = new List<List<Article>>();
+            
+            for (int i = 0; i < limitedArticles.Count; i += batchSize)
             {
-                try
+                batches.Add(limitedArticles.Skip(i).Take(batchSize).ToList());
+            }
+            
+            // Xử lý từng batch
+            foreach (var batch in batches)
+            {
+                var batchTasks = batch.Select(async article =>
                 {
-                    var (translatedTitle, translatedDescription) = await _translationService.TranslateArticleAsync(
-                        article.Title, 
-                        article.Description);
+                    try
+                    {
+                        // Kiểm tra xem có cần dịch không
+                        bool needsTranslation = !string.IsNullOrEmpty(article.Title) && 
+                                              !ContainsVietnamese(article.Title);
+                        
+                        if (needsTranslation)
+                        {
+                            var (translatedTitle, translatedDescription) = await _translationService.TranslateArticleAsync(
+                                article.Title, 
+                                article.Description);
 
-                    article.TranslatedTitle = translatedTitle;
-                    article.TranslatedDescription = translatedDescription;
-                    article.VnPublishedAt = _translationService.ConvertUtcToVnTime(article.PublishedAt);
-
-                    translatedArticles.Add(article);
-                }
-                catch (Exception ex)
+                            article.TranslatedTitle = translatedTitle;
+                            article.TranslatedDescription = translatedDescription;
+                        }
+                        else
+                        {
+                            // Nếu không cần dịch, sử dụng văn bản gốc
+                            article.TranslatedTitle = article.Title;
+                            article.TranslatedDescription = article.Description;
+                        }
+                        
+                        article.VnPublishedAt = _translationService.ConvertUtcToVnTime(article.PublishedAt);
+                        return article;
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.LogError(ex, $"Lỗi khi dịch bài viết: {ex.Message}");
+                        // Vẫn thêm bài viết ngay cả khi không dịch được
+                        article.TranslatedTitle = article.Title;
+                        article.TranslatedDescription = article.Description;
+                        article.VnPublishedAt = _translationService.ConvertUtcToVnTime(article.PublishedAt);
+                        return article;
+                    }
+                });
+                
+                // Chờ tất cả articles trong batch này hoàn thành
+                var batchResults = await Task.WhenAll(batchTasks);
+                translatedArticles.AddRange(batchResults);
+                
+                // Delay giữa các batch để tránh spam
+                if (batches.IndexOf(batch) < batches.Count - 1)
                 {
-                    _logger.LogError(ex, $"Lỗi khi dịch bài viết: {ex.Message}");
-                    // Vẫn thêm bài viết ngay cả khi không dịch được
-                    article.TranslatedTitle = article.Title;
-                    article.TranslatedDescription = article.Description;
-                    article.VnPublishedAt = _translationService.ConvertUtcToVnTime(article.PublishedAt);
-                    translatedArticles.Add(article);
+                    await Task.Delay(500); // Delay 0.5 giây giữa các batch
                 }
             }
 
             return translatedArticles;
+        }
+        
+        // Kiểm tra xem text có chứa tiếng Việt không
+        private bool ContainsVietnamese(string text)
+        {
+            if (string.IsNullOrEmpty(text)) return false;
+            
+            // Kiểm tra các ký tự đặc trưng tiếng Việt
+            var vietnameseChars = new[] { 'ă', 'â', 'đ', 'ê', 'ô', 'ơ', 'ư', 'à', 'á', 'ạ', 'ả', 'ã',
+                                        'è', 'é', 'ẹ', 'ẻ', 'ẽ', 'ì', 'í', 'ị', 'ỉ', 'ĩ', 'ò', 'ó', 'ọ', 'ỏ', 'õ',
+                                        'ù', 'ú', 'ụ', 'ủ', 'ũ', 'ỳ', 'ý', 'ỵ', 'ỷ', 'ỹ' };
+            
+            return text.ToLower().IndexOfAny(vietnameseChars) >= 0;
         }
         
         // Rút gọn từ khóa tìm kiếm khi không tìm thấy kết quả

@@ -4,15 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VTV News Clone</title>
-    <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="/css/site.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
 </head>
 <body>
     <!-- Header -->
     <header class="header">
         <div class="logo">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/39/Vietnam_Television_logo_from_2013.svg/800px-Vietnam_Television_logo_from_2013.svg.png" alt="VTV Logo" height="60">
-            <span class="logo-text">VN TIN TỨC VIỆT NAM</span>
+            <span class="logo-text">TIN TỨC VIỆT NAM VÀ THẾ GIỚI</span>
         </div>
         <div class="header-right">
             <div class="social-icons">
@@ -21,7 +20,7 @@
                 <a href="#"><i class="fab fa-youtube"></i></a>
             </div>
             <div class="search-box">
-                <form method="post" action="/@ViewContext.RouteData.Values["controller"]/@ViewContext.RouteData.Values["action"]">
+                <form method="post" action="@ViewContext.RouteData.Values["controller"]/@ViewContext.RouteData.Values["action"]">
                     <input type="text" name="Query" placeholder="Nhập từ khóa..." required>
                     <input type="date" name="FromDate">
                     <select name="SortBy">

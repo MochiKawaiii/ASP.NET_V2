@@ -50,6 +50,76 @@ body {
   font-size: 16px;
 }
 
+/* Thống kê loading time */
+.load-stats {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 12px 20px;
+  border-radius: 10px;
+  margin: 15px 0;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+}
+
+.load-stats:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+
+.stats-info {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  align-items: center;
+  justify-content: center;
+}
+
+.stats-info span {
+  background: rgba(255,255,255,0.2);
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 500;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.3);
+  transition: all 0.3s ease;
+}
+
+.stats-info span:hover {
+  background: rgba(255,255,255,0.3);
+  transform: scale(1.05);
+}
+
+.load-time {
+  color: #fff;
+}
+
+.article-count {
+  color: #fff;
+}
+
+.translated-count {
+  color: #fff;
+}
+
+/* Responsive cho thống kê */
+@media (max-width: 768px) {
+  .stats-info {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .load-stats {
+    padding: 10px 15px;
+    text-align: center;
+  }
+  
+  .stats-info span {
+    font-size: 13px;
+    padding: 5px 10px;
+  }
+}
+
 /* Tìm kiếm */
 .search-box {
   display: flex;
@@ -191,6 +261,11 @@ body {
   height: 180px;
   object-fit: cover;
   display: block;
+}
+
+/* Điều chỉnh layout khi không có ảnh */
+.news-card:not(:has(.news-card-img)) .news-card-body {
+  padding: 20px 15px;
 }
 
 .news-card-body {

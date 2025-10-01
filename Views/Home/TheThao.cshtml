@@ -1,6 +1,44 @@
 @model NewsViewModel
 
 @{
+    ViewData["Title"] = "Thể thao";
+    ViewBag.ActiveTab = "thethao";
+    ViewBag.CategoryName = Model.CategoryName;
+}
+
+@if (!string.IsNullOrEmpty(Model.ErrorMessage))
+{
+    <div class="error-message">
+        <h2>Đã xảy ra lỗi</h2>
+        <p>@Model.ErrorMessage</p>
+    </div>
+}
+
+<!-- Tên danh mục -->
+<h2 style="text-transform: uppercase; color:#d02028; margin-bottom:20px;">@(Model.CategoryName ?? "Thể Thao")</h2>
+
+<!-- Thông tin thống kê -->
+@if (Model.LoadTimeMs > 0 || Model.TotalArticles > 0)
+{
+    <div class="load-stats">
+        <div class="stats-info">
+            @if (Model.LoadTimeMs > 0)
+            {
+                <span class="load-time">📊 Tải trong @Model.LoadTimeMs ms</span>
+            }
+            @if (Model.TotalArticles > 0)
+            {
+                <span class="article-count">📰 @Model.TotalArticles bài viết</span>
+            }
+            @if (Model.TranslatedCount > 0)
+            {
+                <span class="translated-count">🌐 Đã dịch @Model.TranslatedCount bài</span>
+            }
+        </div>
+    </div>
+}
+
+@{
     ViewData["Title"] = "Thể Thao";
     ViewBag.ActiveTab = Model.ActiveTab;
     ViewBag.CategoryName = Model.CategoryName;
@@ -26,13 +64,16 @@
             @foreach (var article in Model.Articles)
             {
                 <div class="news-card">
-                    <div class="news-card-img">
-                        <img 
-                            src="@(article.UrlToImage ?? "https://via.placeholder.com/400x250?text=No+Image")" 
-                            alt="Hình ảnh bài báo"
-                            onerror="this.src='https://via.placeholder.com/400x250?text=Image+Not+Available'"
-                        >
-                    </div>
+                    @if (!string.IsNullOrEmpty(article.UrlToImage))
+                    {
+                        <div class="news-card-img">
+                            <img 
+                                src="@article.UrlToImage" 
+                                alt="Hình ảnh bài báo"
+                                onerror="this.parentElement.style.display='none'"
+                            >
+                        </div>
+                    }
                     <div class="news-card-body">
                         <h3 class="news-card-title">
                             @if (!string.IsNullOrEmpty(article.TranslatedTitle))

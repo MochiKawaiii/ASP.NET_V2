@@ -56,6 +56,9 @@ namespace VtvNewsApp.Services
                 query = $"{query} AND vietnam";
             }
 
+            // Đảm bảo pageSize không quá lớn để tránh timeout
+            pageSize = Math.Min(pageSize, 100);
+
             try
             {
                 // Thử với NewsAPI trước

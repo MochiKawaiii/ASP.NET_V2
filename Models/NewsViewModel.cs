@@ -11,5 +11,10 @@ namespace VtvNewsApp.Models
         public string Query { get; set; } = string.Empty;
         public string FromDate { get; set; } = string.Empty;
         public string SortBy { get; set; } = "popularity";
+        
+        // Thông tin thống kê tải trang
+        public long LoadTimeMs { get; set; } = 0;
+        public int TotalArticles { get; set; } = 0;
+        public int TranslatedCount { get; set; } = 0;
     }
 }
